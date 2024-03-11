@@ -1,13 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import ExpenseRow from './items/ExpenseRow'
 import { dummyExpenses } from '../utils'
+import { addNewMonthlyExpense } from '../functions/monthlyExpenses';
 
 function Expenses(props) {
 
+  const [monthlyExpenses, setMonthlyExpenses] = useState(dummyExpenses);
+  const [newExpense, setNewExpense] = useState({ title: '', cost: 0 });
+
+  const handleAddExpense = () => {
+    addNewMonthlyExpense(monthlyExpenses, newExpense);
+    setMonthlyExpenses([...monthlyExpenses, newExpense]);
+    setNewExpense({ title: '', cost: 0 }); // Reset form
+  };
+
   return (
     <div >
-      <h3>Household Montly Expenses</h3>
+      <h3>Household Monthly Expenses</h3>
       {/* Form */}
       
       <div className='form-row'>
@@ -17,6 +27,8 @@ function Expenses(props) {
               name="title"
               placeholder='Expense Title'
               autoComplete="off"
+              value={newExpense.title}
+              onChange={(e) => setNewExpense({ ...newExpense, title: e.target.value })}
           />
           <Form.Control
               type="number"
@@ -25,13 +37,15 @@ function Expenses(props) {
               step="0.01"
               placeholder='0.00'
               autoComplete="off"
+              value={newExpense.amount}
+              onChange={(e) => setNewExpense({ ...newExpense, amount: parseFloat(e.target.value) })}
           />
-          <Button className='add-expenses'>Add</Button>
+          <Button className='add-expenses' onClick={handleAddExpense} >Add</Button>
       </div>
 
       {/* List */}
       <div className='expense-outer hide-scroll'>
-        {dummyExpenses.map((item, index) => (
+        {monthlyExpenses.map((item, index) => (
             <ExpenseRow key={index} expense={item} />
         ))}
       </div>
