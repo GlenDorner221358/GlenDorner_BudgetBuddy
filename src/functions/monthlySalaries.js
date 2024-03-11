@@ -12,4 +12,4 @@ function calculateTotalSalaries(list) {
     return result;
 }
 
-export { addNewMonthlySalary, calculateTotalSalaries }
+module.exports = addNewMonthlySalary, calculateTotalSalaries 

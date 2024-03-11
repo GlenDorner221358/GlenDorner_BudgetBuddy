@@ -19,21 +19,56 @@ afterEach(() => {
 })
 
 // tests for adding an expense
-test("Adding a new monthly expense:", () => {
-    // We check if a new item has been added by checking monthlyExpenses' length
-    // New item
-    var newExpense = {title: "Internet", cost: "1200"}
+describe("tests for adding a new expense", () => {
 
-    // check the length
-    console.log("Length of list before adding: " + monthlyExpenses.length)
-    expect(monthlyExpenses.length).toEqual(2)
+    test("Test to check the logic behind adding a new monthly expense using .length:", () => {
+        // We check if a new item has been added by checking monthlyExpenses' length
+        // New item
+        var newExpense = {title: "Internet", cost: 1200}
 
-    // add the new item
-    var newExpenseList = addNewMonthlyExpense(monthlyExpenses, newExpense);
+        // check the length of the array before adding
+        console.log("Length of list before adding a new expense: " + monthlyExpenses.length)
+        expect(monthlyExpenses.length).toEqual(2)
 
-    // check the length again
-    console.log("Length of list before adding: " + monthlyExpenses.length)
-    expect(newExpenseList.length).toEqual(3)
-    
+        // add the new item to the array
+        var newExpenseList = addNewMonthlyExpense(monthlyExpenses, newExpense);
+
+        // check the length again after adding the new item
+        console.log("Length of list after adding: " + monthlyExpenses.length)
+        expect(newExpenseList.length).toEqual(3)
+        
+    })
+
+    test("Test to check if the expense that was added is actually correct", () => {
+        // this test is to check if the latest added expense actually matches what we add to the monthly expenses array
+        // New item
+        var newExpense = {title: "bricks", cost: 500}
+
+        // now add it to the array
+        monthlyExpenses = addNewMonthlyExpense(monthlyExpenses, newExpense);
+
+        // Now we check if its what we added
+        expect(monthlyExpenses[2].title).toMatch(/bricks/)
+        expect(monthlyExpenses[2]).toEqual(newExpense)
+        expect(monthlyExpenses.length).toEqual(3)
+        expect(monthlyExpenses[2].cost).toEqual(500)
+    })
+
 })
 
+describe("test to check if I can calculate the total expenses", () => {
+    // tests for calculating total expenses
+    test("test to check logic behind calculation of total expenses:", () => {
+
+        var total = 0
+        console.log("total expenses before test: " + total)
+
+        // get a total for all of the expenses together
+        for (let i = 0; i < monthlyExpenses.length; i++) {
+            total = total + monthlyExpenses[i].cost 
+        }
+        
+        console.log("total expenses after test: " + total)
+        expect(total).toEqual(8200)
+    })
+})
