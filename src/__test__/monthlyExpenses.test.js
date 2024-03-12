@@ -61,14 +61,7 @@ describe("test to check if I can calculate the total expenses", () => {
     test("test to check logic behind calculation of total expenses:", () => {
 
         var total = 0
-        console.log("total expenses before test: " + total)
-
-        // get a total for all of the expenses together
-        for (let i = 0; i < monthlyExpenses.length; i++) {
-            total = total + monthlyExpenses[i].cost 
-        }
-        
-        console.log("total expenses after test: " + total)
+        calculateTotalExpenses(monthlyExpenses)
         expect(total).toEqual(8200)
     })
 })

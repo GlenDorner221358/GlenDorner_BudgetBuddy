@@ -39,3 +39,8 @@ test("Test to check the logic behind adding a new monthly expense:", () => {
 })
 
 // Test for calculating the total household income before tax
+test("test to check logic behind calculation of total income before tax:", () => {
+
+    var total = calculateTotalSalaries(monthlySalaries)
+    expect(total).toEqual(35000)
+})
