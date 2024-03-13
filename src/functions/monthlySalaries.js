@@ -12,4 +12,5 @@ function calculateTotalSalaries(list) {
     return result;
 }
 
-module.exports = addNewMonthlySalary, calculateTotalSalaries 
+module.exports = { addNewMonthlySalary, calculateTotalSalaries }
+// export default { addNewMonthlySalary, calculateTotalSalaries }

@@ -61,7 +61,7 @@ describe("test to check if I can calculate the total expenses", () => {
     test("test to check logic behind calculation of total expenses:", () => {
 
         var total = 0
-        calculateTotalExpenses(monthlyExpenses)
+        total = calculateTotalExpenses(monthlyExpenses)
         expect(total).toEqual(8200)
     })
 })

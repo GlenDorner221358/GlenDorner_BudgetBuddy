@@ -12,4 +12,4 @@ function calculateTotalExpenses(list) {
     return result;
 }
 
-module.exports = addNewMonthlyExpense, calculateTotalExpenses 
+module.exports = { addNewMonthlyExpense, calculateTotalExpenses }

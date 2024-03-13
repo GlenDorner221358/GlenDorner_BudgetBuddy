@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import PersonIncomeRow from './items/PersonIncomeRow'
 import { Button, Form } from 'react-bootstrap'
 import { dummyIncome, iconOptions } from '../utils'
-import { addNewMonthlySalary } from '../functions/monthlySalaries'; 
+import { addNewMonthlySalary } from '../functions/monthlySalaries.js'; 
 
 function Income(props) {
 

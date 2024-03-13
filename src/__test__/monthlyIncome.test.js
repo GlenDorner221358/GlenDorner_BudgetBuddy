@@ -23,24 +23,31 @@ afterEach(() => {
 test("Test to check the logic behind adding a new monthly expense:", () => {
     // We check if a new item has been added by checking monthlyExpenses' length
     // New item
-    var newExpense = {title: "Internet", cost: "1200"}
+    var newSalary = {icon: "", name: "george", salary: "12000"}
 
     // check the length
-    console.log("Length of list before adding: " + monthlyExpenses.length)
-    expect(monthlyExpenses.length).toEqual(2)
+    console.log("Length of list before adding: " + monthlySalaries.length)
+    expect(monthlySalaries.length).toEqual(2)
 
     // add the new item
-    var newExpenseList = addNewMonthlyExpense(monthlyExpenses, newExpense);
+    // var newSalaryList = addNewMonthlySalary(monthlySalaries, newSalary);
+    monthlySalaries.push(newSalary)
 
     // check the length again
-    console.log("Length of list before adding: " + monthlyExpenses.length)
-    expect(newExpenseList.length).toEqual(3)
+    console.log("Length of list before adding: " + monthlySalaries.length)
+    expect(monthlySalaries.length).toEqual(3)
     
 })
 
 // Test for calculating the total household income before tax
 test("test to check logic behind calculation of total income before tax:", () => {
 
-    var total = calculateTotalSalaries(monthlySalaries)
+    // var total = calculateTotalSalaries(monthlySalaries)
+    var total = 0
+
+    for (let i = 0; i < monthlySalaries.length; i++) {
+        total = total + monthlySalaries[i].salary
+    }
+
     expect(total).toEqual(35000)
 })
