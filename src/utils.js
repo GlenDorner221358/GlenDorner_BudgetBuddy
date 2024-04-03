@@ -2,6 +2,8 @@ export var iconOptions = ["👩", "👱‍♂️", "🐶", "🐱", "🐰", "🐻
 
 export var percentageOptions = [5, 10, 15, 20]
 
+let IncomeB4Tax = sessionStorage.getItem("TotalIncomeB4Tax")
+
 // Dummy data for display purposes 
 export var dummyIncome = [
     {icon: '🐶', name: "John Doe", salary: 15000, bracket: 9.9, taxAmount: 1481, saves: 1500},
@@ -21,7 +23,7 @@ export var dummyExpenses = [
 ]
 
 export var dummyCards = [
-    {icon: "income.png", color: "#E4FDCD", label: "Total Income Before Tax", total: 35000.00},
+    {icon: "income.png", color: "#E4FDCD", label: "Total Income Before Tax", total: parseInt(IncomeB4Tax)},
     {icon: "tax.png", color: "#FFEED2", label: "Total Income After Tax", total: 31017.00},
     {icon: "expense.png", color: "#FFE2D3", label: "Total Expenses", total: 27516.00},
     {icon: "savings.png", color: "#DDDDF7", label: "Total Savings", total: 3500.00},

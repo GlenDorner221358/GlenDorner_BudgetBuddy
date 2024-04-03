@@ -1,10 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 import TaxBlock from './items/TaxBlock'
 import { dummyIncome, percentageOptions } from '../utils'
 import { Form } from 'react-bootstrap'
 import SavingsBlock from './items/SavingsBlock'
 
 function Savings(props) {
+    const [savingsPercent, setSavingsPercent] = useState();
+    const [accounts, setAccounts] = useState([]);
+    const [newSavings, setNewSavings] = useState({ icon: '', name: '', savings: 0 });
+    const [finalArray, setFinalArray] = useState([]);
+
+    setAccounts(sessionStorage.getItem("Salaries"))
+
+    const addNewSavingsAccount = (list, newItem) => {
+        return [...list, newItem];
+    }
+
+    const handleSavingsPercent = () => {
+        for (let i = 0; i < accounts.length; i++) {
+            setNewSavings({ icon: accounts[i].icon, name: accounts[i].name, savings: (accounts[i].income) * 100 / savingsPercent });
+            addNewSavingsAccount(finalArray, newSavings);
+            setFinalArray([...finalArray, newSavings])
+        }
+    }
+
   return (
     <div>
         <div className='title-row'>
@@ -18,7 +37,8 @@ function Savings(props) {
                     autoComplete="off">
                         <option disabled>-</option>
                         {percentageOptions.map((amount, index) => (
-                            <option key={index} value={amount}>{amount}%</option>
+                            <option key={index} value={amount} onChange={() => { setSavingsPercent(amount); handleSavingsPercent(); }} >{amount}%</option>
+                           
                         ))}
             </Form.Select>
             </span>
@@ -26,7 +46,7 @@ function Savings(props) {
        
         {/* List */}
         <div className='scroll-row hide-scroll'>
-            {dummyIncome.map((item, index) => (
+            {finalArray.map((item, index) => (
                 <SavingsBlock key={index} savings={item} />
             ))}
            

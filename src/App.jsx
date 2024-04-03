@@ -13,6 +13,10 @@ import { Button } from 'react-bootstrap'
 
 function App() {
 
+  const handleReset = () => {
+    sessionStorage.clear();
+  }
+
   return (
     <Container fluid>
       <Row >
@@ -21,7 +25,7 @@ function App() {
             <img src='logo512.png' width={60} height={60} />
             <span>BudgetBuddy</span>
           </h2>
-          <Button><img src='reset.png' width={30} height={30} /></Button>
+          <Button onClick={handleReset}><img src='reset.png' width={30} height={30} /></Button>
         </Col>
       </Row>
       <Row>
