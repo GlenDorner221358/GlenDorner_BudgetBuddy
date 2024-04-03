@@ -12,7 +12,7 @@ function TaxBlock(props) {
                 <p>{tax.name}</p>
             </span>
 
-            <h4>{tax.bracket}%</h4>
+            <h4>{tax.taxBracket}</h4>
         </div>
        
         <p className='amount'>- R {tax.taxAmount.toFixed(2)}</p>

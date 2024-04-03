@@ -58,15 +58,9 @@ describe("tests for adding a new expense", () => {
 describe("test to check if I can calculate the total expenses", () => {
     // tests for calculating total expenses
     test("test to check logic behind calculation of total expenses:", () => {
-<<<<<<< Updated upstream
 
         var total = 0
         total = calculateTotalExpenses(monthlyExpenses)
         expect(total).toEqual(8200)
-=======
-        var total = 0;
-        total = calculateTotalExpenses(monthlyExpenses);
-        expect(total).toEqual(8200);
->>>>>>> Stashed changes
     })
 })

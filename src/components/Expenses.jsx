@@ -1,23 +1,38 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import ExpenseRow from './items/ExpenseRow'
-import { dummyExpenses } from '../utils'
-// import { addNewMonthlyExpense } from '../functions/monthlyExpenses';
 
 function Expenses(props) {
 
-  const [monthlyExpenses, setMonthlyExpenses] = useState([]);
-  const [newExpense, setNewExpense] = useState({ title: '', cost: 0 });
+  const [monthlyExpenses, setMonthlyExpenses] = useState(() => {
+    const savedExpenses = sessionStorage.getItem("MonthlyExpenses");
+    return savedExpenses ? JSON.parse(savedExpenses) : [];
+  });
+  
+  const [newExpense, setNewExpense] = useState({ title: '', amount: 0 });
+
+  useEffect(() => {
+    sessionStorage.setItem("MonthlyExpenses", JSON.stringify(monthlyExpenses));
+  }, [monthlyExpenses]);
 
   const addNewMonthlyExpense = (list, newItem) => {
     return [...list, newItem];
   }
 
+  const calculateTotalExpenses = (list) => {
+    let result = list.reduce((acc, curr) => acc + curr.amount, 0);
+    console.log(result);
+    sessionStorage.setItem("TotalExpenses", result);
+    return result; // Return the total expenses
+  };
 
   const handleAddExpense = () => {
-    addNewMonthlyExpense(monthlyExpenses, newExpense);
-    setMonthlyExpenses([...monthlyExpenses, newExpense]);
-    setNewExpense({ title: '', cost: 0 }); // Reset form
+    const updatedExpenses = addNewMonthlyExpense(monthlyExpenses, newExpense);
+    setMonthlyExpenses(updatedExpenses);
+    setNewExpense({ title: '', amount: 0 }); 
+    const TotalExpenses = calculateTotalExpenses(updatedExpenses); 
+    sessionStorage.setItem("TotalExpenses", TotalExpenses); // Corrected the key name
+    window.location.reload();
   };
 
   return (
@@ -43,9 +58,9 @@ function Expenses(props) {
               placeholder='0.00'
               autoComplete="off"
               value={newExpense.amount}
-              onChange={(e) => setNewExpense({ ...newExpense, amount: parseFloat(e.target.value) })}
+              onChange={(e) => setNewExpense({ ...newExpense, amount: parseFloat(e.target.value) || 0 })}
           />
-          <Button className='add-expenses' onClick={handleAddExpense} disabled={!newExpense.title || newExpense.amount === 0}>Add</Button>
+          <Button className='add-expenses' onClick={handleAddExpense} disabled={!newExpense.title || newExpense.amount <= 0}>Add</Button>
       </div>
 
       {/* List */}

@@ -1,28 +1,35 @@
-import React, { useState } from 'react'
-import TaxBlock from './items/TaxBlock'
-import { dummyIncome, percentageOptions } from '../utils'
+import React, { useState, useEffect } from 'react'
+import { percentageOptions } from '../utils'
 import { Form } from 'react-bootstrap'
 import SavingsBlock from './items/SavingsBlock'
 
 function Savings(props) {
-    const [savingsPercent, setSavingsPercent] = useState();
-    const [accounts, setAccounts] = useState([]);
-    const [newSavings, setNewSavings] = useState({ icon: '', name: '', savings: 0 });
-    const [finalArray, setFinalArray] = useState([]);
+    const [salaries, setSalaries] = useState(() => JSON.parse(sessionStorage.getItem("Salaries")) || []);
+    const [finalSave, setFinalSave] = useState(() => JSON.parse(sessionStorage.getItem("FinalSave")) || []);
 
-    setAccounts(sessionStorage.getItem("Salaries"))
+    useEffect(() => {
+        setSalaries(JSON.parse(sessionStorage.getItem("Salaries")) || []);
+        setFinalSave(JSON.parse(sessionStorage.getItem("FinalSave")) || []);
+    }, []);
 
-    const addNewSavingsAccount = (list, newItem) => {
-        return [...list, newItem];
-    }
+    const calculateTotalSavings = (list) => {
+        let result = list.reduce((acc, curr) => acc + curr.saves, 0);
+        console.log(result);
+        sessionStorage.setItem("TotalSavings", result);
+    };
 
-    const handleSavingsPercent = () => {
-        for (let i = 0; i < accounts.length; i++) {
-            setNewSavings({ icon: accounts[i].icon, name: accounts[i].name, savings: (accounts[i].income) * 100 / savingsPercent });
-            addNewSavingsAccount(finalArray, newSavings);
-            setFinalArray([...finalArray, newSavings])
-        }
-    }
+    const handleSavings = (e) => {
+        const percentage = e.target.value;
+        sessionStorage.setItem("percentageSaved", percentage);
+        const updatedSavings = salaries.map(salary => ({
+            ...salary,
+            saves: salary.salary * percentage / 100
+        }));
+        setFinalSave(updatedSavings);
+        calculateTotalSavings(updatedSavings); // Moved inside to ensure it uses the updated state
+        sessionStorage.setItem("FinalSave", JSON.stringify(updatedSavings));
+        window.location.reload();
+    };
 
   return (
     <div>
@@ -33,20 +40,20 @@ function Savings(props) {
                 <Form.Select
                     id="percentage" 
                     name="percentage" 
-                    defaultValue="-"
+                    value={sessionStorage.getItem("percentageSaved")}
+                    onChange={handleSavings} 
                     autoComplete="off">
-                        <option disabled>-</option>
+                        <option disabled value={0}>-</option>
                         {percentageOptions.map((amount, index) => (
-                            <option key={index} value={amount} onChange={() => { setSavingsPercent(amount); handleSavingsPercent(); }} >{amount}%</option>
-                           
+                            <option key={index} value={amount}>{amount}%</option>
                         ))}
-            </Form.Select>
+                </Form.Select>
             </span>
         </div>
        
         {/* List */}
         <div className='scroll-row hide-scroll'>
-            {finalArray.map((item, index) => (
+            {finalSave.map((item, index) => (
                 <SavingsBlock key={index} savings={item} />
             ))}
            

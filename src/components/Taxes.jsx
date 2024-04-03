@@ -1,8 +1,17 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import TaxBlock from './items/TaxBlock'
-import { dummyIncome } from '../utils'
 
 function Taxes(props) {
+
+  const [b4tax, setb4tax] = useState(0);
+  const [finalPplTaxxed, setFinalPplTaxxed] = useState([]);
+
+  useEffect(() => {
+    const totalIncomeB4Tax = sessionStorage.getItem("TotalIncomeB4Tax");
+    if (totalIncomeB4Tax) {
+      setb4tax(parseFloat(totalIncomeB4Tax));
+    }
+  }, []);
 
   // South african tax brackets:
   // R1 - 237K = 18%
@@ -13,46 +22,72 @@ function Taxes(props) {
   // 857K - 1817K = 41%
   // 1817K < = 45%
 
-  const calculateTaxes = () => {
-    let x = 0;
-    if (x > 237000) {
-      // Code block for R1 - 237K = 18%
-      return x * 100 / 18;
+  const calculateTaxes = (income) => {
+    const brackets = [
+      { limit: 237000, rate: 0.18 },
+      { limit: 370500, rate: 0.26 },
+      { limit: 512800, rate: 0.31 },
+      { limit: 673000, rate: 0.36 },
+      { limit: 857900, rate: 0.39 },
+      { limit: 1817000, rate: 0.41 },
+      { limit: Infinity, rate: 0.45 }
+    ];
 
-    } else if (x > 370500) {
-      // Code block for 237K - 370K = 26%
-      return x * 100 / 26;
+    let taxAmount = 0;
+    let taxBracket = '';
 
-    } else if (x > 512800) {
-      // Code block for 370K - 512K = 31%
-      return x * 100 / 31;
+    for (let bracket of brackets) {
+      if (income <= bracket.limit) {
+        taxAmount = income * bracket.rate;
+        taxBracket = `${bracket.rate * 100}%`;
+        break;
+      }
+    }
 
-    } else if (x > 673000) {
-      // Code block for 512K - 673K = 36%
-      return x * 100 / 36;
+    return { taxAmount, taxBracket };
+  }
 
-    } else if (x > 857900) {
-      // Code block for 673K - 857K = 39%
-      return x * 100 / 39;
+  const calculateTotalAfterTax = () => {
+    let afterTaxTotal = 0;
 
-    } else if (x > 1817000) {
-      // Code block for 857K - 1817K = 41%
-      return x * 100 / 41;
-
-    } else {
-      // Code block for 1817K < = 45%
-      return x * 100 / 45;
-
+    for (let i = 0; i < finalPplTaxxed.length; i++) {
+      afterTaxTotal += finalPplTaxxed[i].afterTaxIncome;
+      sessionStorage.setItem("AfterTax", afterTaxTotal);
     }
   }
+
+  const calculateYOURTaxes = () => {
+    const pplTaxxed = JSON.parse(sessionStorage.getItem("Salaries") || '[]');
+
+    const updatedFinalPplTaxxed = pplTaxxed.map(person => {
+      const { taxAmount, taxBracket } = calculateTaxes(person.salary);
+      const afterTaxIncome = person.salary - taxAmount;
+      return { 
+        icon: person.icon, 
+        name: person.name, 
+        taxAmount,
+        taxBracket,
+        afterTaxIncome
+      };
+    });
+
+    setFinalPplTaxxed(updatedFinalPplTaxxed);
+    calculateTotalAfterTax();
+  }
+
+  useEffect(() => {
+    calculateYOURTaxes();
+  }, [b4tax]); // Recalculate when b4tax changes
+
+
+  
 
   return (
     <div data-toggle="tooltip" title="Those bastards!">
         <h3>Tax Bracket Calculation</h3>
 
-        {/* List */}
         <div className='scroll-row hide-scroll'>
-            {dummyIncome.map((item, index) => (
+            {finalPplTaxxed.map((item, index) => (
                 <TaxBlock key={index} tax={item} />
             ))}
         </div>

@@ -15,6 +15,7 @@ function App() {
 
   const handleReset = () => {
     sessionStorage.clear();
+    window.location.reload();
   }
 
   return (
