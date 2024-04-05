@@ -4,29 +4,35 @@ import { Form } from 'react-bootstrap'
 import SavingsBlock from './items/SavingsBlock'
 
 function Savings(props) {
+    // sets some consts, gets them from session storage
     const [salaries, setSalaries] = useState(() => JSON.parse(sessionStorage.getItem("Salaries")) || []);
     const [finalSave, setFinalSave] = useState(() => JSON.parse(sessionStorage.getItem("FinalSave")) || []);
 
+    // same thing here incase the above ones dont exist
     useEffect(() => {
         setSalaries(JSON.parse(sessionStorage.getItem("Salaries")) || []);
         setFinalSave(JSON.parse(sessionStorage.getItem("FinalSave")) || []);
     }, []);
 
+    // calculates the total savings from an array of objs
     const calculateTotalSavings = (list) => {
         let result = list.reduce((acc, curr) => acc + curr.saves, 0);
         console.log(result);
         sessionStorage.setItem("TotalSavings", result);
     };
 
+    // does all the work in the relationship
     const handleSavings = (e) => {
         const percentage = e.target.value;
         sessionStorage.setItem("percentageSaved", percentage);
+        
         const updatedSavings = salaries.map(salary => ({
             ...salary,
             saves: salary.salary * percentage / 100
         }));
+
         setFinalSave(updatedSavings);
-        calculateTotalSavings(updatedSavings); // Moved inside to ensure it uses the updated state
+        calculateTotalSavings(updatedSavings); 
         sessionStorage.setItem("FinalSave", JSON.stringify(updatedSavings));
         window.location.reload();
     };

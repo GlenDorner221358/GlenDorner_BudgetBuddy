@@ -3,9 +3,13 @@ import TaxBlock from './items/TaxBlock'
 
 function Taxes(props) {
 
+  // init some vars
+  // getting the totalIncome b4 tax
   const [b4tax, setb4tax] = useState(0);
+  // this one is like monthlyIncome, array of objs
   const [finalPplTaxxed, setFinalPplTaxxed] = useState([]);
 
+  // So the array doesnt clear when you refresh
   useEffect(() => {
     const totalIncomeB4Tax = sessionStorage.getItem("TotalIncomeB4Tax");
     if (totalIncomeB4Tax) {
@@ -13,7 +17,7 @@ function Taxes(props) {
     }
   }, []);
 
-  // South african tax brackets:
+  // South african tax brackets as of 2024:
   // R1 - 237K = 18%
   // 237K - 370K = 26%
   // 370K - 512K = 31%
@@ -22,6 +26,7 @@ function Taxes(props) {
   // 857K - 1817K = 41%
   // 1817K < = 45%
 
+  // function that takes your income, and returns the amount of taxes you pay, as well as your tax rate
   const calculateTaxes = (income) => {
     const brackets = [
       { limit: 237000, rate: 0.18 },
@@ -47,6 +52,7 @@ function Taxes(props) {
     return { taxAmount, taxBracket };
   }
 
+  // calculates the total money left after taxes
   const calculateTotalAfterTax = () => {
     let afterTaxTotal = 0;
 
@@ -56,6 +62,9 @@ function Taxes(props) {
     }
   }
 
+  // the meat of the taxes functions
+  // creates an array and calculates the taxes for everyone in the array.
+  // said array is pulled from session storage
   const calculateYOURTaxes = () => {
     const pplTaxxed = JSON.parse(sessionStorage.getItem("Salaries") || '[]');
 
@@ -79,8 +88,6 @@ function Taxes(props) {
     calculateYOURTaxes();
   }, [b4tax]); // Recalculate when b4tax changes
 
-
-  
 
   return (
     <div data-toggle="tooltip" title="Those bastards!">

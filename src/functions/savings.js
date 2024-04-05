@@ -1,11 +1,15 @@
-function calculateSavings(list, percentage) {
-    var result = 0;
+const handleSavings = (salaries, percentageSave) => {
+    const updatedSavings = salaries.map(salary => ({
+        ...salary,
+        saves: salary.salary * percentageSave / 100
+    }));
 
-    for (let x = 0; x < list.length; x++) {
-        result = list[x].salary * percentage;
-    }
-    
+    return(updatedSavings);
+};
+
+const calculateTotalSavings = (list) => {
+    let result = list.reduce((acc, curr) => acc + curr.saves, 0);
     return result;
-}
+};
 
-export { calculateSavings }
+module.exports = { calculateTotalSavings, handleSavings };

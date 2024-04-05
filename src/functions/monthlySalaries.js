@@ -6,7 +6,7 @@ function calculateTotalSalaries(list) {
     var result = 0;
 
     for (let x = 0; x < list.length; x++) {
-        result = list[x].salary + result;
+        result += list[x].salary ;
     }
     
     return result;

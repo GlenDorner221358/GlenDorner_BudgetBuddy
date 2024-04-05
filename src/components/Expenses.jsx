@@ -4,21 +4,26 @@ import ExpenseRow from './items/ExpenseRow'
 
 function Expenses(props) {
 
+  // Doing the same thing here as we did in the income file for monthlyIncome
   const [monthlyExpenses, setMonthlyExpenses] = useState(() => {
     const savedExpenses = sessionStorage.getItem("MonthlyExpenses");
     return savedExpenses ? JSON.parse(savedExpenses) : [];
   });
-  
+
+  // More vars
   const [newExpense, setNewExpense] = useState({ title: '', amount: 0 });
 
+  // same as in income
   useEffect(() => {
     sessionStorage.setItem("MonthlyExpenses", JSON.stringify(monthlyExpenses));
   }, [monthlyExpenses]);
 
+  // had import issues so I remade the function here
   const addNewMonthlyExpense = (list, newItem) => {
     return [...list, newItem];
   }
 
+  // same
   const calculateTotalExpenses = (list) => {
     let result = list.reduce((acc, curr) => acc + curr.amount, 0);
     console.log(result);
@@ -26,6 +31,7 @@ function Expenses(props) {
     return result; // Return the total expenses
   };
 
+  // This file could literally be a copy+paste of income and you would never know
   const handleAddExpense = () => {
     const updatedExpenses = addNewMonthlyExpense(monthlyExpenses, newExpense);
     setMonthlyExpenses(updatedExpenses);

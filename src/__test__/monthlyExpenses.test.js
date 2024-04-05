@@ -6,13 +6,11 @@ var monthlyExpenses = [];
 
 // Before each and after each tests
 beforeEach(() => {
-    console.log("happens once before a test")
     monthlyExpenses.push({title: "Groceries", cost: 5000})
     monthlyExpenses.push({title: "Water", cost: 3200})
 })
 
 afterEach(() => {
-    console.log("happens once after a test")
     // array should be cleared here
     monthlyExpenses = [];
 })

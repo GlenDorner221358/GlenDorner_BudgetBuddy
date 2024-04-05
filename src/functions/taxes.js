@@ -1,32 +1,55 @@
-function calculateTaxes(item) {
-    if (item < 237000) {
-        // Code block for R1 - 237K = 18%
-        return Math.round(item * 100 / 18);
+function calculateTaxes (income) {
+    let brackets = [
+        { limit: 237000, rate: 0.18 },
+        { limit: 370500, rate: 0.26 },
+        { limit: 512800, rate: 0.31 },
+        { limit: 673000, rate: 0.36 },
+        { limit: 857900, rate: 0.39 },
+        { limit: 1817000, rate: 0.41 },
+        { limit: Infinity, rate: 0.45 }
+    ];
 
-    } else if (item < 370500) {
-        // Code block for 237K - 370K = 26%
-        return Math.round(item * 100 / 26);
+    let taxAmount = 0;
+    let taxBracket = '';
 
-    } else if (item < 512800) {
-        // Code block for 370K - 512K = 31%
-        return Math.round(item * 100 / 31);
-
-    } else if (item < 673000) {
-        // Code block for 512K - 673K = 36%
-        return Math.round(item * 100 / 36);
-
-    } else if (item < 857900) {
-        // Code block for 673K - 857K = 39%
-        return Math.round(item * 100 / 39);
-
-    } else if (item < 1817000) {
-        // Code block for 857K - 1817K = 41%
-        return Math.round(item * 100 / 41);
-
-    } else {
-        // Code block for 1817K < = 45%
-        return Math.round(item * 100 / 45);
+    for (let bracket of brackets) {
+        if (income <= bracket.limit) {
+        taxAmount = income * bracket.rate;
+        taxBracket = `${bracket.rate * 100}%`;
+        break;
+        }
     }
+
+    return { taxAmount, taxBracket };
 }
 
-module.exports = { calculateTaxes };
+// calculates the total money left after taxes
+function calculateTotalAfterTax (array) {
+    let afterTaxTotal = 0;
+
+    for (let i = 0; i < array.length; i++) {
+        afterTaxTotal += array[i].afterTaxIncome;
+    }
+
+    return afterTaxTotal;
+}
+
+function calculateYOURTaxes (array) {
+    const updatedFinalPplTaxxed = [];
+
+    for (let person of array) {
+        const { taxAmount, taxBracket } = calculateTaxes(person.salary);
+        const afterTaxIncome = person.salary - taxAmount;
+        updatedFinalPplTaxxed.push({ 
+            icon: person.icon, 
+            name: person.name, 
+            taxAmount,
+            taxBracket,
+            afterTaxIncome
+        });
+    }
+
+    return updatedFinalPplTaxxed;
+}
+
+module.exports = { calculateTaxes, calculateTotalAfterTax, calculateYOURTaxes };

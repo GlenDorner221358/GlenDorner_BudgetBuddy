@@ -6,27 +6,33 @@ import { iconOptions } from '../utils';
 
 function Income(props) {
 
-    // the array of new salaries
+    // init monthly income variable, pulls from salaries in session storage
+    // if salaries doesnt exist, it just makes monthlyIncome an empty array
     const [monthlyIncome, setMonthlyIncome] = useState(() => {
         const savedIncome = sessionStorage.getItem("Salaries");
         return savedIncome ? JSON.parse(savedIncome) : [];
     });
-    // one object in monthly income
-    const [newSalary, setNewSalary] = useState({ icon: '', name: '', salary: 0 });
-    const [newIncome, setNewIncome] = useState([]);
 
+    // init more variables
+    const [newSalary, setNewSalary] = useState({ icon: '', name: '', salary: 0 });
+
+    // sends monthlyIncome to the session storage to become salaries used to init itself above
     useEffect(() => {
         sessionStorage.setItem("Salaries", JSON.stringify(monthlyIncome));
     }, [monthlyIncome]);
 
+    // Function we tested from monthly salaries.js file
+    // recreated here because I had trouble with the imports 
     const addNewMonthlySalary = (list, newItem) => {
         return [...list, newItem];
     }
 
+    // sets the icon in the newSalary object
     const handleIconChange = (e) => {
         setNewSalary({ ...newSalary, icon: e.target.value }); // Function to handle icon change
     };
 
+    // calculates the total income and sends it to session storage
     const calculateTotalIncome = (list) => {
         let result = 0;
         console.log(list);
@@ -37,6 +43,7 @@ function Income(props) {
         sessionStorage.setItem("TotalIncomeB4Tax", result);
     };
 
+    // Handles the adding of a new salary to the monthlyIncome array
     const handleAddSalary = () => {
         const updatedMonthlyIncome = addNewMonthlySalary(monthlyIncome, newSalary);
         setMonthlyIncome(updatedMonthlyIncome);
@@ -44,8 +51,6 @@ function Income(props) {
         calculateTotalIncome(updatedMonthlyIncome); 
         window.location.reload();
     };
-
-    
 
     return (
         <div>
@@ -88,14 +93,6 @@ function Income(props) {
             {monthlyIncome && monthlyIncome.length > 0 && (
                 <div className='income-outer hide-scroll'>
                     {monthlyIncome.map((item, index) => (
-                        <PersonIncomeRow key={index} index={index+1} person={item} />
-                    ))}
-                </div>
-            )}
-
-            {newIncome && newIncome.length > 0 && (
-                <div className='income-outer hide-scroll'>
-                    {newIncome.map((item, index) => (
                         <PersonIncomeRow key={index} index={index+1} person={item} />
                     ))}
                 </div>
