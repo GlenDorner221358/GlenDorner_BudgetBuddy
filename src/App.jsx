@@ -19,7 +19,7 @@ function App() {
   }
 
   return (
-    <Container fluid>
+    <Container fluid data-testid="outer-app">
       <Row >
         <Col xs={12} className='topbar p-3 mb-4'>
           <h2 className='title'>
@@ -32,7 +32,7 @@ function App() {
       <Row>
         <Col xs={12} sm={12} md={5}>
           <div className='card shadow-sm p-3 mb-4 bg-white rounded'>
-            <Income />
+            <Income data-testid="income"  />
           </div>
           <div className='card shadow-sm p-3 mb-4 bg-white rounded'>
             <Taxes />

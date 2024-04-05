@@ -4,7 +4,7 @@ function LastTotalCard(props) {
   const {total} = props;
 
   return (
-    <div className='final-total p-2'>
+    <div className='final-total p-2' data-testid="lastTotal">
         <div className='icon' style={{backgroundColor: total.color}}>
             <img src={total.icon} width={40} height={40} />
         </div>

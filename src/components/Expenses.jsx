@@ -52,6 +52,7 @@ function Expenses(props) {
               id="title"
               name="title"
               placeholder='Expense Title'
+              data-testid="expenseName"
               autoComplete="off"
               value={newExpense.title}
               onChange={(e) => setNewExpense({ ...newExpense, title: e.target.value })}
@@ -65,8 +66,9 @@ function Expenses(props) {
               autoComplete="off"
               value={newExpense.amount}
               onChange={(e) => setNewExpense({ ...newExpense, amount: parseFloat(e.target.value) || 0 })}
+              data-testid="expenseCost"
           />
-          <Button className='add-expenses' onClick={handleAddExpense} disabled={!newExpense.title || newExpense.amount <= 0}>Add</Button>
+          <Button data-testid='expenseButton' className='add-expenses' onClick={handleAddExpense} disabled={!newExpense.title || newExpense.amount <= 0}>Add</Button>
       </div>
 
       {/* List */}

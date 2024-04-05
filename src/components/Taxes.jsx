@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import TaxBlock from './items/TaxBlock'
 
-function Taxes(props) {
+function Taxes() {
 
   // init some vars
   // getting the totalIncome b4 tax
@@ -90,14 +90,17 @@ function Taxes(props) {
 
 
   return (
-    <div data-toggle="tooltip" title="Those bastards!">
+    <div data-toggle="tooltip" title="Those bastards!" data-testid="taxesContainer">
         <h3>Tax Bracket Calculation</h3>
-
-        <div className='scroll-row hide-scroll'>
-            {finalPplTaxxed.map((item, index) => (
-                <TaxBlock key={index} tax={item} />
-            ))}
-        </div>
+        {b4tax === 0 ? (
+          <p>Add an income to get started</p>
+        ) : (
+          <div className='scroll-row hide-scroll' data-testid="taxBlock">
+              {finalPplTaxxed.map((item, index) => (
+                  <TaxBlock key={index} tax={item} />
+              ))}
+          </div>
+        )}
     </div>
   )
 }

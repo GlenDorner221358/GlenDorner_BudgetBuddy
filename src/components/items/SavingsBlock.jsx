@@ -3,7 +3,7 @@ import React from 'react'
 function SavingsBlock(props) {
     const {savings} = props
   return (
-    <div className='card card-col p-2 row-savings'>
+    <div className='card card-col p-2 row-savings' data-testid="savingsBlock">
         <div className='card-row'>
             <span>
                 <div className='avatar'>

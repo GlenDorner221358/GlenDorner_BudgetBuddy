@@ -3,7 +3,7 @@ import { percentageOptions } from '../utils'
 import { Form } from 'react-bootstrap'
 import SavingsBlock from './items/SavingsBlock'
 
-function Savings(props) {
+function Savings() {
     // sets some consts, gets them from session storage
     const [salaries, setSalaries] = useState(() => JSON.parse(sessionStorage.getItem("Salaries")) || []);
     const [finalSave, setFinalSave] = useState(() => JSON.parse(sessionStorage.getItem("FinalSave")) || []);
@@ -38,7 +38,7 @@ function Savings(props) {
     };
 
   return (
-    <div>
+    <div data-testid="savingsContainer">
         <div className='title-row'>
             <h3>Savings Calculation</h3>
             <span>
@@ -48,7 +48,8 @@ function Savings(props) {
                     name="percentage" 
                     value={sessionStorage.getItem("percentageSaved")}
                     onChange={handleSavings} 
-                    autoComplete="off">
+                    autoComplete="off"
+                    data-testid="savingsSelect">
                         <option disabled value={0}>-</option>
                         {percentageOptions.map((amount, index) => (
                             <option key={index} value={amount}>{amount}%</option>
@@ -58,12 +59,16 @@ function Savings(props) {
         </div>
        
         {/* List */}
+        {salaries.length === 0 ? (
+          <p>Add an income to get started</p>
+        ) : (
         <div className='scroll-row hide-scroll'>
             {finalSave.map((item, index) => (
                 <SavingsBlock key={index} savings={item} />
             ))}
            
         </div>
+        )}
     </div>
   )
 }

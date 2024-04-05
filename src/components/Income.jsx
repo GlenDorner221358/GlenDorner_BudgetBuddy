@@ -62,6 +62,7 @@ function Income(props) {
                     defaultValue="-" 
                     autoComplete="off"
                     onChange={handleIconChange} 
+                    data-testid="iconInput"
                 >
                     <option disabled>-</option>
                     {iconOptions.map((icon, index) => (
@@ -76,6 +77,7 @@ function Income(props) {
                     autoComplete="off"
                     value={newSalary.name}
                     onChange={(e) => setNewSalary({ ...newSalary, name: e.target.value })}
+                    data-testid="nameInput"
                 />
                 <Form.Control
                     type="number"
@@ -86,8 +88,9 @@ function Income(props) {
                     autoComplete="off"
                     value={newSalary.salary}
                     onChange={(e) => setNewSalary({ ...newSalary, salary: parseFloat(e.target.value) })} 
+                    data-testid="incomeInput"
                 />
-                <Button className='add-income' onClick={() => { handleAddSalary(); }} disabled={!newSalary.name || newSalary.salary === 0}>Add</Button>
+                <Button data-testid='incomeButton' className='add-income' onClick={() => { handleAddSalary(); }} disabled={!newSalary.name || newSalary.salary === 0}>Add</Button>
             </div>
 
             {monthlyIncome && monthlyIncome.length > 0 && (
