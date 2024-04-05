@@ -130,11 +130,11 @@ describe("Tests for each form", () => {
         var workingExpensesTotalMessage = screen.queryByText(/R 500/i)
       
         expect(totalExpensesHint).toBeInTheDocument()
-        expect(emptyExpeneseTotal).toHaveTextContent("0 Things To Do")
+        expect(emptyExpensesTotal).toHaveTextContent("0 Things To Do")
         expect(workingExpensesTotalMessage).Not.toBeInTheDocument() 
 
         // snapshot test
-        expect(totalIncomeComponent).toMatchSnapshot()
+        expect(totalExpensesComponent).toMatchSnapshot()
     })
 
     test("test last total empty starting state", () => {
